@@ -76,7 +76,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
   keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) \
 )
 
-/* Enable Tap Dance */
-#define TAPPING_TERM 200
+/* Enable Tap Dance
+#define TAPPING_TERM 200 */
 
 #endif
