@@ -3,6 +3,11 @@
 // Helpful defines
 #define _______ KC_TRNS
 
+enum custom_keycodes
+{
+    KC_P00 = SAFE_RANGE
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_60_ansi_split_rshift(
         KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
@@ -14,19 +19,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_NO, KC_TRNS,
-        KC_TRNS, BL_TOGG, BL_OFF, BL_ON, BL_BRTG, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, TO(2),
+        KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, TO(2),
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_END),
     [2] = LAYOUT_60_ansi_split_rshift(
         KC_ESC, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P7, KC_P8, KC_P9, KC_PSLS, KC_NO, KC_NO, KC_BSPC,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P4, KC_P5, KC_P6, KC_PAST, KC_NO, KC_NO, KC_NO,
         KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P1, KC_P2, KC_P3, KC_PMNS, KC_NO, KC_PENT,
-        KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P0, KC_P0, KC_PDOT, KC_PPLS, KC_UP, TO(0),
+        KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P0, KC_P00, KC_PDOT, KC_PPLS, KC_UP, TO(0),
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT)};
 
 // Layers
-#define L_QWERTY   0
+#define L_QWERTY 0
 #define L_FUNCTION 1
-#define L_NUMBER   2
+#define L_NUMBER 2
 
 // Update layer and set underglow
 uint32_t layer_state_set_user(uint32_t state)
@@ -45,3 +50,17 @@ uint32_t layer_state_set_user(uint32_t state)
     }
     return state;
 }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record)
+{
+    if (record->event.pressed)
+    {
+        switch (keycode)
+        {
+        case KC_P00:
+            SEND_STRING("00");
+            return false;
+        }
+    }
+    return true;
+};
