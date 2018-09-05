@@ -33,18 +33,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define L_FUNCTION 1
 #define L_NUMBER 2
 
+static bool blinking = false;
+static int count = 0;
+
+void blink_backlight(void)
+{
+    if (count++ > 100)
+    {
+        count = 0;
+        backlight_step();
+    }
+}
+
+void matrix_scan_user(void)
+{
+    if (blinking) blink_backlight();
+}
+
 // Update layer and set underglow
 uint32_t layer_state_set_user(uint32_t state)
 {
     switch (biton32(state))
     {
     case L_QWERTY:
+        blinking = false;
         backlight_level(3);
         break;
     case L_FUNCTION:
-        backlight_step();
+        blinking = true;
         break;
     case L_NUMBER:
+        blinking = false;
         backlight_level(0);
         break;
     }
