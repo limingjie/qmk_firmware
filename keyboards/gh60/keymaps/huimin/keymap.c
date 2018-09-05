@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 
+#include "time.h"
+
 // Helpful defines
 #define _______ KC_TRNS
 
@@ -33,15 +35,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define L_FUNCTION 1
 #define L_NUMBER 2
 
+// Backlight blinking
+#define BLINK_STEPS 18
+#define BLINK_INTERVAL 200     // ms
+static int blink_step = 0;
+static int blink_seq[BLINK_STEPS] = {0, 3, 0, 3, 0, 3, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1};
 static bool blinking = false;
-static int count = 0;
+static uint32_t blink_timer;  // ms
+
+void enable_blinking(void)
+{
+    blinking = true;
+    blink_step = 0;
+    blink_timer = timer_read32();
+}
+
+void disable_blinking(void)
+{
+    blinking = false;
+    backlight_level(BACKLIGHT_LEVELS);
+}
 
 void blink_backlight(void)
 {
-    if (count++ > 100)
+    uint32_t now = timer_read32();
+    if (now - blink_timer > BLINK_INTERVAL)
     {
-        count = 0;
-        backlight_step();
+        blink_timer = now;
+        backlight_level(blink_seq[blink_step++]);
+        blink_step %= BLINK_STEPS;
     }
 }
 
@@ -56,14 +78,14 @@ uint32_t layer_state_set_user(uint32_t state)
     switch (biton32(state))
     {
     case L_QWERTY:
-        blinking = false;
-        backlight_level(3);
+        disable_blinking();
+        backlight_level(BACKLIGHT_LEVELS);
         break;
     case L_FUNCTION:
-        blinking = true;
+        enable_blinking();
         break;
     case L_NUMBER:
-        blinking = false;
+        disable_blinking();
         backlight_level(0);
         break;
     }
