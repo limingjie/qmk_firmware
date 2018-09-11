@@ -1,6 +1,6 @@
 #include QMK_KEYBOARD_H
 
-#include "time.h"
+#include "blink_backlight.c"
 
 // Helpful defines
 #define _______ KC_TRNS
@@ -40,63 +40,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_P0,  KC_P00, KC_PDOT,  KC_PPLS,          _______, _______,
         _______, _______, _______,                            _______,                             _______, _______, _______, _______)};
 
-// Backlight blinking
-static uint32_t timer;
-static bool blinking = false;
-static int blink_seq = 0;
-static int blink_effects[][100] = {
-    [0] = {
-        9,   // number of steps
-        0,   // current step
-        200, // interval
-        1, 2, 3, 3, 3, 2, 2, 1, 1 // levels
-    },
-    [1] = {
-        2,   // number of steps
-        0,   // current step
-        100, // interval
-        0, 3 // levels
-    },
-    [2] = {
-        9,   // number of steps
-        0,   // current step
-        200, // interval
-        0, 3, 0, 0, 3, 0, 0, 0, 3 // levels
-    },
-    [3] = {
-        6,   // number of steps
-        0,   // current step
-        100, // interval
-        3, 2, 3, 1, 3, 0 // levels
-    }
-};
-
-void enable_blinking(void)
-{
-    blinking = true;
-    timer = timer_read32();
-}
-
-void disable_blinking(void)
-{
-    blinking = false;
-    backlight_level(BACKLIGHT_LEVELS);
-}
-
-void blink_backlight(void)
-{
-    uint32_t now = timer_read32();
-    if (now - timer > blink_effects[blink_seq][2])
-    {
-        timer = now;
-        backlight_level(blink_effects[blink_seq][blink_effects[blink_seq][1]++ + 3]);
-        blink_effects[blink_seq][1] %= blink_effects[blink_seq][0];
-    }
-}
-
 void matrix_scan_user(void)
 {
-    if (blinking) blink_backlight();
+    blink_backlight();
 }
 
 // Update layer and set underglow
@@ -106,7 +52,6 @@ uint32_t layer_state_set_user(uint32_t state)
     {
     case L_QWERTY:
         disable_blinking();
-        backlight_level(BACKLIGHT_LEVELS);
         break;
     case L_FUNCTION:
         enable_blinking();
@@ -129,8 +74,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             SEND_STRING("00");
             return false;
         case BLK_INC:
-            blink_seq++;
-            blink_seq %= sizeof (blink_effects) / sizeof(blink_effects[0]);
+            blink_next();
             return false;
         }
     }
