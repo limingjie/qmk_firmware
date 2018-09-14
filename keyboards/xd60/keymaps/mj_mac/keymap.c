@@ -1,4 +1,4 @@
- #include QMK_KEYBOARD_H
+#include QMK_KEYBOARD_H
 
 // Helpful Defines
 #define _______    KC_TRNS
@@ -52,9 +52,14 @@ void set_underglow(void)
     }
 
     if (!rgblight_config.enable)
+    {
         rgblight_enable_noeeprom();
+    }
+
     if (rgblight_config.mode != 1)
+    {
         rgblight_mode_noeeprom(1);
+    }
 
     switch (layer)
     {
