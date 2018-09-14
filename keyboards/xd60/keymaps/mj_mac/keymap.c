@@ -5,7 +5,7 @@
 #define XXXXXXX    KC_NO
 #define FN_CAPS    LT(1, KC_CAPS)
 
-// Mac Keyboard Shorts
+// Mac Keyboard Shortcuts
 #define SCR2DSK    LSFT(LGUI(KC_3))        // Take screenshot and save to desktop
 #define SCR2CLP    LCTL(LSFT(LGUI(KC_4)))  // Take screenshot of selected area to clipboard
 #define FINDER     LALT(LGUI(KC_SPACE))    // Open finder (Fn + E simulates Win + E)
@@ -84,12 +84,10 @@ void set_underglow(void)
     }
 }
 
-void matrix_init_user(void)
+void suspend_wakeup_init_user(void)
 {
-    // cannot close rgb here...
-    rgblight_enable_noeeprom();
-    rgblight_setrgb(0x00, 0x00, 0x00);
     rgblight_disable_noeeprom();
+    rgblight_disable();
 }
 
 // Update layer and set underglow
