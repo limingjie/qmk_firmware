@@ -10,15 +10,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [PAD] = pad_5x5(
         KC_PSLS, KC_PAST, KC_PMNS,  KC_PPLS, KC_PENT,
         KC_HOME, KC_PGUP, KC_KP_7,  KC_KP_8, KC_KP_9,
-        KC_END,  RGB_MOD, KC_KP_4,  KC_KP_5, KC_KP_6,
-        RGB_TOG, KC_UP,   KC_KP_1,  KC_KP_2, KC_KP_3,
+        KC_END,  KC_PGDN, KC_KP_4,  KC_KP_5, KC_KP_6,
+        MO(1),   KC_UP,   KC_KP_1,  KC_KP_2, KC_KP_3,
         KC_LEFT, KC_DOWN, KC_RIGHT, KC_KP_0, KC_KP_DOT),
     [FUNCTION] = pad_5x5(
-        KC_PSLS, KC_PAST, KC_PMNS,  KC_PPLS, KC_PENT,
-        KC_HOME, KC_PGUP, KC_KP_7,  KC_KP_8, KC_KP_9,
-        KC_END,  RGB_MOD, KC_KP_4,  KC_KP_5, KC_KP_6,
-        RGB_TOG, KC_UP,   KC_KP_1,  KC_KP_2, KC_KP_3,
-        KC_LEFT, KC_DOWN, KC_RIGHT, KC_KP_0, KC_KP_DOT)
+        _______, _______, _______,  _______,  RESET,
+        _______, _______, RGB_M_X,  RGB_M_G,  RGB_M_T,
+        _______, _______, RGB_M_SW, RGB_M_SN, RGB_M_K,
+        _______, _______, RGB_M_P,  RGB_M_B,  RGB_M_R,
+        RGB_MOD, RGB_TOG, RGB_RMOD, _______,  _______)
 };
 
 const uint16_t PROGMEM fn_actions[] = {
