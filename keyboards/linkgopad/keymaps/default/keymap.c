@@ -8,17 +8,17 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [PAD] = pad_5x5(
-        KC_HOME, KC_KP_7, KC_KP_8,  KC_KP_9,   KC_PMNS,
-        KC_PGUP, KC_KP_4, KC_KP_5,  KC_KP_6,   KC_PPLS,
-        KC_PGDN, KC_KP_1, KC_KP_2,  KC_KP_3,   KC_PSLS,
-        KC_END,  KC_UP,   KC_KP_0,  KC_KP_DOT, KC_PAST,
-        KC_LEFT, KC_DOWN, KC_RIGHT, MO(1),     KC_PENT),
+        KC_HOME, KC_KP_7, KC_KP_8, KC_KP_9, KC_PMNS,
+        KC_PGUP, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS,
+        KC_PGDN, KC_KP_1, KC_KP_2, KC_KP_3, KC_PSLS,
+        KC_END,  KC_KP_0, KC_UP,   KC_PDOT, KC_PAST,
+        MO(1),   KC_LEFT, KC_DOWN, KC_RGHT, KC_PENT),
     [FUNCTION] = pad_5x5(
-        _______, _______, _______,  _______, RESET,
-        _______, _______, _______,  _______, _______,
-        _______, _______, _______,  _______, _______,
-        _______, _______, _______,  _______, _______,
-        RGB_MOD, RGB_TOG, RGB_RMOD, _______, _______)
+        KC_ESC,   _______, _______, _______, KC_BSPC,
+        RGB_MOD,  _______, _______, _______, _______,
+        RGB_RMOD, _______, _______, _______, _______,
+        RGB_TOG,  _______, _______, KC_COMM, _______,
+        _______,  _______, KC_SPC,  _______, RESET)
 };
 
 const uint16_t PROGMEM fn_actions[] = {
