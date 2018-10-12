@@ -1,24 +1,27 @@
 #include QMK_KEYBOARD_H
 
-#define PAD      0
-#define FUNCTION 1
+#define PAD 0
 
 // Readability keycodes
 #define _______ KC_TRNS
 
+enum custom_keycodes
+{
+    KC_RED = SAFE_RANGE,
+    KC_GREEN,
+    KC_YELLOW
+};
+
+// Used to check underglow status
+extern rgblight_config_t rgblight_config;
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [PAD] = pad_5x5(
-        KC_HOME, KC_KP_7, KC_KP_8, KC_KP_9, KC_PMNS,
-        KC_PGUP, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS,
-        KC_PGDN, KC_KP_1, KC_KP_2, KC_KP_3, KC_PSLS,
-        KC_END,  KC_KP_0, KC_UP,   KC_PDOT, KC_PAST,
-        MO(1),   KC_LEFT, KC_DOWN, KC_RGHT, KC_PENT),
-    [FUNCTION] = pad_5x5(
-        KC_ESC,   _______, _______, _______, KC_BSPC,
-        RGB_MOD,  _______, _______, _______, _______,
-        RGB_RMOD, _______, _______, _______, _______,
-        RGB_TOG,  _______, _______, KC_COMM, _______,
-        _______,  _______, KC_SPC,  _______, RESET)
+        _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______,
+        KC_RED,  RESET,   KC_GREEN, _______, KC_YELLOW,
+        RGB_M_B, RGB_M_R, RGB_M_SN, RGB_M_X, RGB_M_T)
 };
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -54,6 +57,29 @@ void matrix_scan_user(void)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
+    if (!rgblight_config.enable)
+    {
+        rgblight_enable_noeeprom();
+    }
+
+    if (record->event.pressed)
+    {
+        switch (keycode)
+        {
+        case KC_RED:
+            rgblight_sethsv_noeeprom_red();
+            rgblight_mode_noeeprom(1);
+            return false;
+        case KC_GREEN:
+            rgblight_sethsv_noeeprom_green();
+            rgblight_mode_noeeprom(1);
+            return false;
+        case KC_YELLOW:
+            rgblight_sethsv_noeeprom_yellow();
+            rgblight_mode_noeeprom(1);
+            return false;
+        }
+    }
     return true;
 }
 
